@@ -1,0 +1,117 @@
+.container-entregador {
+    width: 100%;
+    max-width: 1180px;
+    margin: 32px auto;
+    /* background-image: url("../../assets/forms-back-entr.png");
+    background-size: 100% 100%; */
+  }
+
+.container-entregador header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container-entregador header img {
+    height: 64px;
+  }
+
+.container-entregador aside {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 20vw;
+    height: 40vh;
+    padding: 30px 20px;
+}
+
+.container-entregador aside img {
+    width: 14vw;
+    margin-top: 5%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.container-entregador aside img:hover{
+    transform: scale(1.1);
+}
+
+.user button{
+    background-color: #F09435;
+    color: white;
+    font-size: larger; 
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    margin-top: 15vh;
+    margin-left: 35%;
+}
+
+/* .feed{
+    display: flex;
+    justify-content: right;
+    position: absolute;
+    margin-left: 32%;
+    margin-top: 250px;
+} */
+
+.feed ul{
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    list-style: none;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;   
+  }
+  
+  .feed li {
+    background: linear-gradient(180deg, rgba(248, 85, 42, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #FFFEFE;;
+    padding: 24px;
+    border-radius: 8px;
+    position: relative;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+    .feed ul li strong {
+      margin-left: 20%;
+    }
+  
+    .feed ul li p {
+      color: #737380;
+      line-height: 21px;
+      font-size: 16px;
+      margin-left: 20%;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  
+    .feed ul li #iconFeed{
+      position: absolute;
+    }
+
+    .feed h1{
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+  .swal2-popup {
+    border-radius: 80px !important;
+    /* background-image: url("../../assets/back-pop-entr.png");
+    background-size: cover; */
+  }
+
+  #swal2-content {
+      list-style: none;
+  }
+
+@media only screen and (max-device-width: 900px) {
+    .container-entregador aside img {width: 14vw;}
+    
+  }
+
+

@@ -1,0 +1,137 @@
+.logo{
+    margin-top: 1vw;
+    margin-left: 1vw;
+    width: 14vw;
+}
+
+.formas{
+    width: 24vw;
+    z-index: 0;
+}
+
+.container{
+    display: grid;    
+    grid-template-rows: 15vh 15vh 15vh;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.forma-nordeste{
+    justify-self: right;
+    align-self: auto;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.forma-central{
+    width: 32vw;
+    margin-top:55%;
+    justify-self: center;
+    align-self: center;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.login-container{
+    z-index: 10;
+    margin-top: 40%;
+    display: unset;
+    justify-self: center;
+    align-self: center;
+    grid-column: 2;
+    grid-row: 2;    
+}
+
+.login-label{
+    font-size: 3vw;
+    margin-left: 25%;
+}
+
+.login-container-items{
+    font-weight: bolder;
+    align-items: center;
+    color: black;
+    height: 90%;
+}
+
+.input{
+    font-weight: lighter;
+    font-size: 1.2vw;
+    background-color: #e4e4e4;
+    height: 3vw;
+    width: 20vw;
+    border-radius: 10px;
+    border-width: 0.1px;
+    margin-left: 10%;   
+}
+
+.login-credenciais-label{
+    margin-top: 1vw;
+    margin-left: 10%;
+    font-size: 2.0vw;
+    height: 3.5vw;
+}
+
+@media (max-width: 600px) {
+    .login-credenciais-label{
+        height: 1vh;
+    }
+}
+
+button{
+    background-color: #F8552A;
+    color: white;
+    width: 9vw;
+    height: 3vw;
+    border-width: 0;
+    /* margin-left: 30%; */
+    /* font-size: 1.4vw; */
+    border-radius: 10px;
+    margin-top: 2vw;  
+}
+
+button:active {
+    -webkit-box-shadow: inset 1px 1px 10px #333;
+    -moz-box-shadow:    inset 1px 1px 10px #333;
+    box-shadow:         inset 1px 1px 10px #333;
+}
+
+.forma-sudeste{   
+    justify-self: right;
+    align-self: baseline;
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.forma-sudoeste{
+    justify-self: left;
+    align-self: baseline;
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.barra-lateral{
+    display: grid;
+    justify-self: right;
+    align-self: baseline;
+    grid-column: 3;
+    grid-row: 15;
+    background-color: #F8C02A;
+    height: 9vh;
+    width:  4vw;
+    animation-duration: 2s;
+    border-radius: 2px;
+}
+
+.barra-lateral:active{
+    -webkit-box-shadow: inset 1px 1px 10px #333;
+    -moz-box-shadow:    inset 1px 1px 10px #333;
+    box-shadow:         inset 1px 1px 10px #333;
+}
+
+.barra-lateral > img{
+    width: 2.5vw;
+    height: 2.5vw;
+    justify-self: left;
+    align-self: center;
+    margin-left: 0.4vw;
+}

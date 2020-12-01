@@ -1,0 +1,144 @@
+/* .background {
+  background-image: url("../../assets/forms-back-cons.png");
+  background-size: 100% 100%;
+} */
+
+.container-consumidor {
+    width: 100%;
+    max-width: 1180px;
+    margin: 32px auto;
+  }
+
+.container-consumidor header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.navBar {
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navBar input {
+    border: none;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: #DEDEDE;
+    height: 40px;
+    width: 100%;
+    padding: 0px 20px;
+    margin-left: 5%;
+}
+
+.navBar button {
+    border: none;
+    background-color: #037EA3;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 40px;
+    width: 10vw;
+    font-size: larger;
+    text-align: center;
+    transition: filter 0.2s;
+}
+
+.navBar svg{
+    cursor: pointer;
+}
+
+.navBar button:hover{
+    filter: brightness(90%);
+}
+
+.navBar strong {
+    font-size: x-large;
+    margin-left: 1%;
+}
+
+#btn{
+    width: 14vw;
+    margin-top: 5%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#btn:hover{
+    transform: scale(1.1);
+}
+
+.container-consumidor header span {
+    font-size: 20px;
+  }
+
+  .container-consumidor header img {
+    height: 64px;
+  }
+
+  .models ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+  
+  .models ul li{
+      display: inline-block;
+  }
+
+  .models ul li + li{
+    padding-left: 50px;
+}
+
+  .feed ul{
+  width: 500px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  list-style: none;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 auto;   
+}
+
+.feed li {
+  background: linear-gradient(180deg, rgba(248, 85, 42, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #FFFEFE;;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+  text-align: left;
+  margin-bottom: 20px;
+}
+  .feed ul li strong {
+    margin-left: 20%;
+  }
+
+  .feed ul li p {
+    color: #737380;
+    line-height: 21px;
+    font-size: 16px;
+    margin-left: 20%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .feed ul li #iconFeed{
+      position: absolute;
+  }
+
+  .swal2-popup {
+      border-radius: 80px !important;
+  }
+
+  #swal2-content {
+      list-style: none;
+  }
+
+
+  @media only screen and (max-device-width: 900px) {
+    #btn{width: 20vw;}
+}

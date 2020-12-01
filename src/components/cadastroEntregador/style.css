@@ -1,0 +1,136 @@
+.header{
+    margin-top: 2.5vw;
+    font-size: 1.7vw;
+    font-weight: bolder;
+    width: 40.0vw;
+    margin-left: 3.5vw;
+}
+
+.lbl-rg{
+    margin-top: 3.5vw;
+    margin-left: 5.5vw;
+}
+.lbl-rg div{
+    margin-left: 3.5vw;
+    font-weight: 1000;
+    font-size: 1.3vw; 
+    margin-bottom: 0.5vw; 
+}
+
+.lbl-foto-rg{
+    margin-top: 3.5vw;
+}
+
+.container-foto-rg{
+    display: flex;
+}
+
+.div-anexar-foto-rg{
+    padding: 3.0vw;
+    height: 11.0vw;
+    border-radius: 15px;
+    border-color: black;
+    border-style: solid;
+    width: 23.0vw;
+    background-color: #DEDEDE;
+    display: grid;
+}
+
+.container-lbl-frase{
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    margin-left: 6.0vw;
+    
+
+}
+.lbl-foto-rg{
+    margin-bottom: 1.0vw;
+    font-weight: bolder;
+    font-size: 1.2vw; 
+}
+.container-geral{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 3.5vw;
+    margin-left: 6.5vw;
+
+}
+
+.foto-logo{
+
+    height: 5.0vw;
+    width: 5.0vw;
+}
+
+.container-btn-anexar{
+    display: grid;
+    margin-left: 2.5vw;
+    margin-top: 5.0vw;
+    background-color: #F09435;
+    width: 9.0vw;  
+    height:  2.5vw;
+    border-radius: 15px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.frase-btn-anexar{
+    font-size: 1.1vw;
+    align-self: center;
+    justify-self: center;
+}
+
+.container-fotos{
+    margin-top: 4.0vw;
+    display: flex;
+
+}
+
+#btn-cadastrar-entregador{
+    margin-bottom: 4.0vw;
+    margin-top: 4.5vw;
+    margin-left: 54.0vw;
+    padding: 2.0vw;
+    background-color: #35C4F0;
+    width: 14.7vw;  
+    height:  4.0vw;
+    border-radius: 15px;
+    font-weight: 600;
+    display: grid;
+}
+
+#btn-cadastrar-entregador div{ 
+    font-size: 1.3vw;
+    color: #fff;
+    word-wrap: break-word;
+    align-self: center;
+    justify-self: center;
+    margin-top: -1.9vw;
+    text-align: justify;
+}
+
+label#thumbnail input {
+    display: none
+}
+
+label#thumbnail.has-thumbnailRG img {
+    display: none;
+}
+
+label#thumbnail.has-thumbnailPerfil img {
+    display: none;
+}
+
+label#thumbnail{
+    border: 1px dashed #ddd;
+    background-size: cover;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -2.9vw;
+    margin-left: -3.0vw;
+    height: 10.3vw;
+    width: 22.5vw;
+    border-radius: 15px;
+}
