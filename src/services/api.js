@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let api = axios.create({
-    baseURL: "http://localhost:8888"
+    baseURL: "https://vapm-api.herokuapp.com/"
 })
 
 export default api;

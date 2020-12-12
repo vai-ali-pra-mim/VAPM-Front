@@ -1,18 +1,21 @@
-/* .background {
-  background-image: url("../../assets/forms-back-cons.png");
-  background-size: 100% 100%;
-} */
-
 .container-consumidor {
     width: 100%;
-    max-width: 1180px;
-    margin: 32px auto;
+    max-width: 1580px;
+    margin: 35px auto;
+    /* background-image: url("../../assets/background.png");
+    background-size: 100% 100%; */
+
   }
 
 .container-consumidor header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.container-consumidor header svg{
+  vertical-align: middle;
+  margin-left: 5px;
 }
 
 
@@ -34,14 +37,41 @@
     margin-left: 5%;
 }
 
-.navBar button {
+.navBar svg{
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.btn-menu button{
+  background-color: #037EA3;
+  border-radius: 20px;
+  transition: filter 0.2s;
+  color: white;
+  border: none;
+  width: 100px;
+  height: 45px;
+}
+
+svg.fi-menu{
+  margin: 0px 5px 0px 0px;
+  vertical-align: middle;
+}
+
+.btn-menu button:hover{
+  filter: brightness(90%);
+}
+
+
+
+ #buscar {
     border: none;
+    color: white;
     background-color: #037EA3;
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     height: 40px;
     width: 10vw;
-    font-size: larger;
+    font-size: 100%;
     text-align: center;
     transition: filter 0.2s;
 }
@@ -95,7 +125,7 @@
     padding-left: 50px;
 }
 
-  .feed ul{
+  .feedCons ul{
   width: 500px;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -105,19 +135,20 @@
   margin: 0 auto;   
 }
 
-.feed li {
-  background: linear-gradient(180deg, rgba(248, 85, 42, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #FFFEFE;;
+.feedCons li {
+  background: linear-gradient(180deg, rgba(3, 126, 163, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #FFFEFE;
   padding: 24px;
   border-radius: 8px;
   position: relative;
   text-align: left;
   margin-bottom: 20px;
 }
-  .feed ul li strong {
+  .feedCons ul li strong {
     margin-left: 20%;
+    color: #8EAFE8;
   }
 
-  .feed ul li p {
+  .feedCons ul li p {
     color: #737380;
     line-height: 21px;
     font-size: 16px;
@@ -126,7 +157,7 @@
     margin-bottom: 5px;
   }
 
-  .feed ul li #iconFeed{
+  .feedCons ul li #iconFeed{
       position: absolute;
   }
 
@@ -141,4 +172,83 @@
 
   @media only screen and (max-device-width: 900px) {
     #btn{width: 20vw;}
+    #buscar{width: 20vw;}
+}
+/* 
+  @media only screen and (max-device-width: 00px) {
+    #buscar{width: 40vw;}
+} */
+
+@media only screen and (max-device-width: 500px) {
+  #buscar svg{display: none;}
+}
+
+#botao-menu{
+  font-size: 15px;
+}
+
+.fi-menu{
+  margin-right: 1.0vw;
+  height: 2.0vw;
+}
+
+.icon-logout{
+  margin-right: -2.0vw;
+}
+
+.item-logout{
+  margin-left: -2.0vw;
+}
+
+#sino{
+  margin-left: 25px;
+}
+
+#sino:hover{
+  transform: scale(1.1);
+}
+
+/*Sidebar*/
+
+.sidebar {
+  height: 100%; 
+  width: 0; 
+  position: fixed;
+  z-index: 1; 
+  top: 0; 
+  left: 0;
+  background-color: #006a8a;
+  overflow-x: hidden;
+  padding-top: 60px; 
+  transition: 0.5s; 
+}
+
+.sidebar strong{
+  color: white;
+  margin-left: 80px;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#sideLocal {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
+.not{
+  border: 3px solid white;
+  border-radius: 10px;
+  color: white;
+  background-color:#00495f;
+  text-align: center;
+}
+
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
 }

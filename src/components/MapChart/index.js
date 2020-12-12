@@ -1,57 +1,69 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import star from '../../assets/star.png'
 import icons from './customObjects/index'
+import { v4 as uuidv4 } from 'uuid';
+import Swal from 'sweetalert2';
 import './style.css'
 
 import api from '../../services/api'
 
-export default function MapChart({usuario}) {
+export default function MapChart({ usuario }) {
     const [entregadores, setEntregadores] = useState([])
+    const [posts, setPosts] = useState([])
     const [solicitante, setSolicitante] = useState({ coordenadas: '0,0' })
-    const [coordenadasSolicitante, setCoordenadasSolicitante] = useState([-23.5039837,-46.71006])
-   // const [CEPAtual, setCEPAtual] = useState('')
-    //const [numeroCEP, setNumeroCEP] = useState('')
+    const [coordenadasSolicitante, setCoordenadasSolicitante] = useState([-23.5039837, -46.71006])
 
     useEffect(() => {
-        console.log(usuario)
+        //console.log(usuario)
         setSolicitante(usuario);
-        setCoordenadasSolicitante(String(usuario.coordenadas).split(',').map(item =>Number(item)))
-        console.log(String(usuario.coordenadas).split(', ').map(item =>Number(item)))
+        setCoordenadasSolicitante(String(usuario.coordenadas).split(',').map(item => Number(item)))
+        // console.log(String(usuario.coordenadas).split(', ').map(item => Number(item)))
 
         setTimeout(() => { getEntregadores() }, 1000)
     }, [])
 
     function getEntregadores() {
         api.get(`/usuarios/entregadores/${usuario.coordenadas}`).then(item => {
+            // console.log(item.data)
+            sessionStorage.setItem('entregadores', JSON.stringify(item.data))
             setEntregadores(item.data)
+            setPosts(JSON.parse(sessionStorage.getItem('posts')))
         })
-
-
     }
 
-    //Formulario de criação de novos posts
-    // async function handleAddPosicao() {
-    //     let enderecoJson = await api.get(`https://viacep.com.br/ws/${CEPAtual}/json/`);
-    //     // console.log(enderecoJson.data)
+    function openModalSolicitarEntregador(post, nomeEntregador) {
+        Swal.fire({
+            title: `Post`,
+            html: ` <div className="feed" key={item.idUsuario}>
 
-    //     let enderecoLogradouro = String(`${enderecoJson.data.logradouro}%2C%20${numeroCEP}&format=json`).replace(" ", "%20")
-    //     console.log(enderecoLogradouro)
-    //     if (!enderecoJson.data.logradouro)
-    //         throw new Error("Endereço não tem logradouro")
-    //     else {
-    //         //console.log(enderecoLogradouro)
-    //         let novaCoordenadas = await api.get(`https://us1.locationiq.com/v1/search.php?key=pk.98f58b5cb4882f50ba1c5f0974552f24&q=${enderecoLogradouro}&format=json`)
-    //         //console.log(novaCoordenadas)
+                <div onClick={timerInterval}>
+                   
+                     <strong>${nomeEntregador}</strong>
+                    <img src=${star} id="yellow" width="30" /> 4,7
+                    <p>${post.descricao} - ${post.localTarefa} - em ${post.tempoEstimadoRealizacao} minutos</p>
 
-    //         let data = { latitude: novaCoordenadas.data[0].lat, longitude: novaCoordenadas.data[0].lon }
-    //         //console.log(data)
-    //         await api.post('/', data)
-    //     }
-    // }
+                    <strong> aceita - até ${post.limitePesoEntrega}Kg(s) e/ou ${post.limiteQuantidadeItens} item(s)</strong>
+                    <p>Taxa de entrega: R$ ${post.taxaEntrega}</p>
+                </div>
+
+        </div> `,
+            icon: 'info',
+            confirmButtonText: 'Solicitar',
+            confirmButtonColor: '#F09435',
+            showCancelButton: true,
+            cancelButtonText: "Voltar",
+            denyButtonColor: "#d6d5d2",
+            preConfirm: () => {
+
+                return;
+            }
+        })
+    }
 
     return (
         <div id="container">
-            <MapContainer id="mapid" center={coordenadasSolicitante} zoom={14} >
+            <MapContainer id="mapid" center={String(usuario.coordenadas).split(',').map(item => Number(item))} zoom={14} >
                 <TileLayer
                     attribution='&amp;copy <a href="http://osm.org/copyright">Open5treetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -59,22 +71,30 @@ export default function MapChart({usuario}) {
                 {
                     entregadores.length > 0 ?
                         entregadores.map(item => (
-                            <Marker key={item.idUsuario} riseOnHover={true} position={item.coordenadas.split(', ').map(item => Number(item))} zoom={15}>
-                                <Popup maxWidth={130} className="popup" >
+                            <Marker key={uuidv4()} riseOnHover={true} position={item.coordenadas.split(', ').map(item => Number(item))} zoom={15}>
+                                <Popup maxWidth={110} className="popup" >
 
+                                    {posts.length > 0 ?
+                                        posts.map(itemPost => (
+                                            itemPost.usuarioId == item.idUsuario ?
+                                                <>
+                                                    <h3 key={uuidv4()} >{itemPost.titulo}</h3>
+                                                    {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}
 
-                                    <h3>{item.post != null ? String(item.post.titulo) : ""}</h3>
-                                    {item.post != null ? String(item.post.descricao).length < 37 ? item.post.descricao : `${item.post.descricao.substring(0, 37)}...` : ""}
-                                    <button>Ver mais</button>
+                                                    < button onClick={() => openModalSolicitarEntregador(itemPost, item.nomeCompleto)}>Ver mais</button>
+                                                </>
+                                                : null
+                                        ))
+                                        : null
+                                    }
                                 </Popup>
                             </Marker>
                         ))
                         :
                         null
                 }
-
                 {
-                    <Marker key={solicitante.idUsuario} riseOnHover={true} position={coordenadasSolicitante} icon={icons.boyIcon} zoom={15}>
+                    <Marker key={solicitante.idUsuario} riseOnHover={true} position={coordenadasSolicitante} icon={icons.oldManIcon} zoom={15}>
                         <Popup>
                             {solicitante.nomeCompleto}
                         </Popup>
@@ -82,7 +102,7 @@ export default function MapChart({usuario}) {
                 }
 
             </MapContainer>
-        
-        </div>
+
+        </div >
     )
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import './style.css'
 import camera from "../../assets/camera.png"
-import { FiCamera } from 'react-icons/fi';
 
 export default function CadastroEntregador(props) {
 
@@ -12,13 +11,12 @@ export default function CadastroEntregador(props) {
     function sendData(e) {
         let value = e.target.value
         setRG(value)
-
     }
 
     const previewRG = useMemo(
         () => {
             if (thumbnailRG) {
-                console.log(URL.createObjectURL(thumbnailRG))
+                //console.log(URL.createObjectURL(thumbnailRG))
                 return URL.createObjectURL(thumbnailRG)
             }
             return null;
@@ -28,33 +26,20 @@ export default function CadastroEntregador(props) {
     const previewPerfil = useMemo(
         () => {
             if (thumbnailPerfil) {
-                console.log(URL.createObjectURL(thumbnailPerfil))
+               // console.log(URL.createObjectURL(thumbnailPerfil))
                 return URL.createObjectURL(thumbnailPerfil)
             }
             return null;
         }, [thumbnailPerfil]
     )
 
-    function validation(idProcurado, valor, lengthMin, lengthMax) {
-        let input = document.getElementById(idProcurado)
-        if (valor.length < lengthMin || valor.length > lengthMax) {
-            input.style.border = "2px solid red"
-        }
-        else {
-            input.style.border = "1px solid black"
-        }
-    }
-
-    useEffect(() => {
-        validation("inputRG", RG, 9, 12)
-    }, [RG])
-
     function cadastrar() {
-        if (document.getElementById("inputRG").style.border =="1px solid black" &
+        if (RG!=''&
             thumbnailPerfil != '' &
             thumbnailRG != '') 
         {
-            props.parentCallback([document.getElementById("inputRG").style.border, previewPerfil, previewRG]);
+            //console.log(props)
+            props.parentCallback([document.getElementById("inputRG").value, previewPerfil, previewRG]);
             document.getElementById("inputRG").value ="";
             setThumbnailPerfil(null);
             setThumbnailRG(null);
@@ -91,8 +76,7 @@ export default function CadastroEntregador(props) {
                                 <img src={camera} alt="Select file" className="foto-logo" />
                             </label>
                         </div>
-
-
+                     
                         <div className="container-btn-anexar">
                             <div className="frase-btn-anexar">
                                 Anexar foto
@@ -113,8 +97,7 @@ export default function CadastroEntregador(props) {
                                 <img src={camera} alt="Select file" className="foto-logo" />
                             </label>
                         </div>
-
-
+                    
                         <div className="container-btn-anexar">
                             <div className="frase-btn-anexar">
                                 Anexar foto

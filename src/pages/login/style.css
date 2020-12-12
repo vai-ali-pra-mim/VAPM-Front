@@ -1,40 +1,33 @@
-.logo{
-    margin-top: 1vw;
-    margin-left: 1vw;
-    width: 14vw;
-}
-
-.formas{
-    width: 24vw;
-    z-index: 0;
-}
-
-.container{
-    display: grid;    
-    grid-template-rows: 15vh 15vh 15vh;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.forma-nordeste{
+.barra-lateral{
+    display: flex;
     justify-self: right;
-    align-self: auto;
-    grid-column: 3;
-    grid-row: 1;
+    align-self: baseline;
+    float: right;
+    margin-top: -15.0vw;
+    background-color: #F8C02A;
+    height: 9vh;
+    width:  4vw;
+    animation-duration: 2s;
+    border-radius: 2px;
 }
 
-.forma-central{
-    width: 32vw;
-    margin-top:55%;
-    justify-self: center;
+.barra-lateral:active{
+    -webkit-box-shadow: inset 1px 1px 10px #333;
+    -moz-box-shadow:    inset 1px 1px 10px #333;
+    box-shadow:         inset 1px 1px 10px #333;
+}
+
+.barra-lateral > img{
+    width: 2.5vw;
+    height: 2.5vw;
+    justify-self: left;
     align-self: center;
-    grid-column: 2;
-    grid-row: 2;
+    margin-left: 0.4vw;
 }
 
 .login-container{
     z-index: 10;
-    margin-top: 40%;
-    display: unset;
+    display: grid;
     justify-self: center;
     align-self: center;
     grid-column: 2;
@@ -43,12 +36,14 @@
 
 .login-label{
     font-size: 3vw;
-    margin-left: 25%;
+    margin-left: 20%;
 }
 
 .login-container-items{
     font-weight: bolder;
     align-items: center;
+    justify-content: center;
+    margin-left: 30.0vw;
     color: black;
     height: 90%;
 }
@@ -71,18 +66,23 @@
     height: 3.5vw;
 }
 
+
 @media (max-width: 600px) {
     .login-credenciais-label{
         height: 1vh;
     }
 }
+.container-btn-entrar{
+    margin-left:13.0vw;
+}
 
-button{
+.login-container button{
     background-color: #F8552A;
     color: white;
     width: 9vw;
     height: 3vw;
     border-width: 0;
+    align-items: center;
     /* margin-left: 30%; */
     /* font-size: 1.4vw; */
     border-radius: 10px;
@@ -95,43 +95,3 @@ button:active {
     box-shadow:         inset 1px 1px 10px #333;
 }
 
-.forma-sudeste{   
-    justify-self: right;
-    align-self: baseline;
-    grid-column: 3;
-    grid-row: 3;
-}
-
-.forma-sudoeste{
-    justify-self: left;
-    align-self: baseline;
-    grid-column: 1;
-    grid-row: 3;
-}
-
-.barra-lateral{
-    display: grid;
-    justify-self: right;
-    align-self: baseline;
-    grid-column: 3;
-    grid-row: 15;
-    background-color: #F8C02A;
-    height: 9vh;
-    width:  4vw;
-    animation-duration: 2s;
-    border-radius: 2px;
-}
-
-.barra-lateral:active{
-    -webkit-box-shadow: inset 1px 1px 10px #333;
-    -moz-box-shadow:    inset 1px 1px 10px #333;
-    box-shadow:         inset 1px 1px 10px #333;
-}
-
-.barra-lateral > img{
-    width: 2.5vw;
-    height: 2.5vw;
-    justify-self: left;
-    align-self: center;
-    margin-left: 0.4vw;
-}

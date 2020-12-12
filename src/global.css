@@ -6,20 +6,24 @@
   padding: 0;
   outline: 0;
   box-sizing: border-box;
-  
 }
 
 body {
   /* font: 400 14px Roboto, sans-serif; */
-  font-family: 'Baloo Tamma 2', Roboto;
+  font-family: 'Baloo Tamma 2', sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* background-image: image("./src/assets/forms-back.png"); */
+  background-image: url("./assets/background.png");
+  background-size: cover;
 }
 
 input, button, textarea {
-  font: 500 16px 'Baloo Tamma 2', Roboto;
+  font: 500 20px 'Baloo Tamma 2', Roboto;
 }
 
 button {
   cursor: pointer;
+}
+
+#logoVAPM{
+  width: 10vw;
 }

@@ -7,11 +7,6 @@
     background-size: 100%; */
   }
 
-  .cadastro-container .logo{
-      width: 150px;
-      height: 150px;
-  }
-
   .cadastro-container h2{
       padding-top: 10px;
       padding-bottom: 10px;
@@ -59,6 +54,19 @@
   .cadastro-container form h3{
     font-size: 18px;
     margin-bottom: 32px;
+  }
+
+  .cadastro-container button{
+    border-radius: 15px;
+    text-align: center;
+    width: 180px;
+    height: 60px;
+    border: 0;
+    margin-top: 16px;
+    margin-bottom: 32px;
+    text-decoration: none;
+    transition: filter 0.2s;
+    padding: 0px 20px;
   }
 
   /* --------------- */
@@ -122,7 +130,9 @@
 
   .buttonC {
     background-color: #35C4F0;
-    color: white
+    color: white;
+    height: 5vw;
+    width: 13vw;
 }
 
   .container-entregador h3 {
@@ -157,5 +167,8 @@
   }
 
  
-
+#pontoReferencia{
+  resize: none;
+  max-width: 34.0vw;
+}
   

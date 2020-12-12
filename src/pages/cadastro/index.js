@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
-import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import api from '../../services/api'
@@ -16,107 +15,57 @@ export default function Cadastro() {
     const [telefone, setTelefone] = useState('')
     const [email, setEmail] = useState('')
     const [dataNascimento, setdataNascimento] = useState('')
+    const [idade, setIdade] = useState(19)
     const [senha, setSenha] = useState('')
     const [confirmarSenha, setConfirmarSenha] = useState('')
     const [CEP, setCEP] = useState('')
     const [CPF, setCPF] = useState('')
     const [complemento, setComplemento] = useState('')
     const [pontoReferencia, setPontoReferencia] = useState('')
-    const [requisicaoPronta, setRequisicaoPronta] = useState([])
     const [mostrarExtensaoCadastroSolicitante, setMostrarExtensaoCadastroSolicitante] = useState(true)
     const [RG, setRG] = useState('')
     const [thumbnailRG, setThumbnailRG] = useState('')
     const [thumbnailPerfil, setThumbnailPerfil] = useState('')
 
-
-    function validation(idProcurado, valor, lengthMin, lengthMax) {
-        let input = document.getElementById(`${idProcurado}`)
-        if (valor.length < lengthMin || valor.length > lengthMax) {
-            input.style.border = "2px solid red"
-
-        }
-        else {
-            input.style.border = "1px solid black"
-            return true
-        }
-    }
-
     function callbackChildFunction(childData) {
-        console.log(childData)
+        sessionStorage.setItem('rg', childData[0])
         setRG(childData[0])
         setThumbnailRG(childData[1])
         setThumbnailPerfil(childData[2])
-        enviarRequisicaoPost()
-        document.getElementById("extensaoCadastro").style.display="none";
-
+        enviarRequisicaoPost(0)
+        document.getElementById("extensaoCadastro").style.display = "none";
+        window.location.href = "http://localhost:3000/login"
     }
 
     useEffect(() => {
-        validation("nome", nome, 3, 20)
-    }, [nome])
-
-    useEffect(() => {
-        validation("sobrenome", sobrenome, 3, 30)
-    }, [sobrenome])
-
-    useEffect(() => {
-        validation("telefone", telefone, 10, 11)
-    }, [telefone])
-
-    useEffect(() => {
-        validation("cpf", CPF, 11, 11)
-    }, [CPF])
-
-    useEffect(() => {
-        validation("email", email, 7, 65)
-    }, [email])
-
-    useEffect(() => {
-        validation("senha", senha, 7, 15)
-    }, [senha])
-
-    useEffect(() => {
-        validation("confirmarSenha", confirmarSenha, 7, 15)
-        let input = document.getElementById("confirmarSenha")
-        if (confirmarSenha != senha)
-            input.style.border = "2px solid red"
-        else
-            input.style.border = "1px solid black"
-
-    }, [confirmarSenha])
-
-    useEffect(() => {
-        validation("cep", CEP, 8, 9)
-    }, [CEP])
-
-    useEffect(() => {
-        validation("complemento", complemento, 3, 30)
-    }, [complemento])
+        document.getElementById("extensaoCadastro").style.display = "none"
+    }, [])
 
     useEffect(() => {
         let input = document.getElementById("dataNascimento")
         let date = new Date();
         let dataAtual = new Date(date.getFullYear(), date.getMonth(), date.getDate())
         let dataNasc = new Date(dataNascimento)
+        setIdade(dataAtual.getFullYear() - dataNasc.getFullYear())
 
-        if (dataNasc < dataAtual && dataAtual.getFullYear() - dataNasc.getFullYear() < 18)
+        if (dataNasc < dataAtual && idade < 18 || idade < 18) {
             input.style.border = "2px solid red"
-        else
+            //console.log("menor: " + idade)
+        }
+        else {
             input.style.border = "1px solid black"
-    }, [dataNascimento])
+        }
 
-    useEffect(() => {
-        document.getElementById("extensaoCadastro").style.display = "none"
-    }, [])
+    }, [dataNascimento])
 
     useEffect(async () => {
         let rua = document.querySelector("#rua")
         let estado = document.querySelector("#estado")
         let cidade = document.querySelector("#cidade")
 
-        if (CEP.length == 8 && CEP != "        ") {
+        if (CEP.length == 8 ||CEP.length == 9 && CEP != "        ") {
             let localidade = await api.get(`https://viacep.com.br/ws/${CEP}/json/`)
-            console.log(localidade)
+            //console.log(localidade)
             rua.value = localidade.data.logradouro;
             estado.value = localidade.data.uf;
             cidade.value = localidade.data.localidade;
@@ -126,32 +75,51 @@ export default function Cadastro() {
             estado.value = "";
             cidade.value = "";
         }
+
     }, [CEP])
 
-    async function enviarRequisicaoPost() {
+    async function buscarCoordenadas() {
+        let enderecoJson = await api.get(`https://viacep.com.br/ws/${CEP}/json/`);
+        // console.log(enderecoJson.data)
+        let enderecoLogradouro = String(`${enderecoJson.data.logradouro}%2C%20${CEP}`).replace(" ", "%20")
+        //console.log(enderecoLogradouro)
+        if (!enderecoJson.data.logradouro)
+            throw new Error("Endereço não tem logradouro")
+        else {
+            // console.log(enderecoLogradouro)
+            api.get(`https://us1.locationiq.com/v1/search.php?key=pk.98f58b5cb4882f50ba1c5f0974552f24&q=${enderecoLogradouro}&format=json`)
+                .then(item => {
+                    let data = item.data[0]
+                    sessionStorage.setItem('coordenadas', `${data.lat}, ${data.lon}`)
+                })
+        }
+    }
+
+    async function enviarRequisicaoPost(ehConsumidor) {
+        buscarCoordenadas()
+       // console.log('ehConsumidor: ');
+        //console.log(ehConsumidor)
         let corpoRequisicao = {
             nomeCompleto: `${nome} ${sobrenome}`,
-            dataNascimento: dataNascimento,
-            complemento: complemento,
-            telefone: telefone,
-            email: email,
-            senha: senha,
-            coordenadas: null,
-            saldo: null,
+            dataNascimento,
+            complemento,
+            telefone,
+            email,
+            senha,
+            coordenadas: sessionStorage.getItem('coordenadas'),
+            saldo: 0,
             cpf: CPF,
             cep: CEP,
-            rg: RG
+            ehConsumidor: ehConsumidor,
+            rg: sessionStorage.getItem('rg'),
+            pontoReferencia: pontoReferencia
         }
         try {
-            console.log(requisicaoPronta)
-            if (document.getElementById("cpf").style.border == "1px solid black" && document.getElementById("cep").style.border == "1px solid black" &&
-                document.getElementById("senha").style.border == "1px solid black" && document.getElementById("email").style.border == "1px solid black" &&
-                document.getElementById("telefone").style.border == "1px solid black" && document.getElementById("complemento").style.border == "1px solid black" &&
-                document.getElementById("dataNascimento").style.border == "1px solid black" && document.getElementById("nome").style.border == "1px solid black") {
-                let requisicao = await api.post("http://localhost:8888/usuarios", corpoRequisicao);
-                console.log(requisicao)
-                window.location.href="http://localhost:3000/login"
-            }
+           // console.log(corpoRequisicao)
+            let requisicao = await api.post("/usuarios", corpoRequisicao);
+            sessionStorage.setItem('requisicao', JSON.stringify(requisicao))
+            //console.log(requisicao)
+            window.location.href = "http://localhost:3000/login"
         }
         catch (er) {
             console.log("Requisicao não foi feita")
@@ -159,32 +127,32 @@ export default function Cadastro() {
         }
     }
 
+    async function handleSubmit(event) {
+        event.preventDefault()
+    }
+
     function mostrarExtensaoCadastro() {
         if (mostrarExtensaoCadastroSolicitante) {
+            let botaoEntregador = document.getElementById("buttonE")
             document.getElementById("extensaoCadastro").style.display = "block"
-            setMostrarExtensaoCadastroSolicitante(false)
-
-            var botaoEntregador = document.getElementById("buttonE")
+            setMostrarExtensaoCadastroSolicitante(false)          
             botaoEntregador.style.display = "none"
-
-            var botaoConsumidor = document.getElementById("buttonC").innerHTML = "Terminar cadastro como consumidor"
+            document.getElementById("buttonC").innerHTML = "Terminar cadastro como consumidor"
         } else {
-            var botaoEntregador = document.getElementById("buttonE")
+            let botaoEntregador = document.getElementById("buttonE")
             botaoEntregador.style.display = "block"
-            var botaoConsumidor = document.getElementById("buttonC").innerHTML = "Finalizar cadastro como consumidor"
-            // document.getElementById("extensaoCadastro").style.display="none"
+            document.getElementById("buttonC").innerHTML = "Finalizar cadastro como consumidor"
             setMostrarExtensaoCadastroSolicitante(true)
         }
     }
 
     return (
         <div className="cadastro-container">
-            <img className="logo" src={logo} alt="logo" />
+            <img id="logoVAPM" src={logo} alt="logo" />
             <h2>Cadastrar-se como Consumidor</h2>
-            <form >
+            <form onSubmit={handleSubmit}>
                 <h3>Dados Pessoais</h3>
                 <ul>
-
                     <li>
                         <strong>Nome
                         {nome.length < 3 || nome.length > 20 ? <>
@@ -200,7 +168,7 @@ export default function Cadastro() {
                                 null
                             }
                         </strong>
-                        <input id="nome" minLength="3" maxLength="30" placeholder="Digite seu nome..." onChange={e => setNome(e.target.value)} />
+                        <input id="nome" minLength="3" maxLength="30" required placeholder="Digite seu nome..." onChange={e => setNome(e.target.value)} />
                     </li>
 
                     <li>
@@ -218,7 +186,7 @@ export default function Cadastro() {
                                 null
                             }
                         </strong>
-                        <input id="sobrenome" minLength="3" maxLength="30" placeholder="Digite seu sobrenome..." onChange={e => setSobrenome(e.target.value)} />
+                        <input id="sobrenome" minLength="3" maxLength="30" required placeholder="Digite seu sobrenome..." onChange={e => setSobrenome(e.target.value)} />
                     </li>
 
                     <li>
@@ -236,7 +204,7 @@ export default function Cadastro() {
                                 null
                             }
                         </strong>
-                        <input id="telefone" minLength="11" maxLength="11" placeholder="(xx)x xxxx-xxxx" onChange={e => setTelefone(e.target.value)} />
+                        <input id="telefone" minLength="11" maxLength="11" required placeholder="(xx)x xxxx-xxxx" onChange={e => setTelefone(e.target.value)} />
                     </li>
 
                     <li>
@@ -254,16 +222,16 @@ export default function Cadastro() {
                                 null
                             }
                         </strong>
-                        <input minLength="11" maxLength="11" id="cpf" placeholder="000.000.000-00" onChange={e => setCPF(e.target.value)} />
+                        <input minLength="11" maxLength="11" id="cpf" required placeholder="000.000.000-00" onChange={e => setCPF(e.target.value)} />
                     </li>
 
                     <li>
                         <strong>Email</strong>
-                        <input minLength="7" maxLength="65" id="email" type="email" placeholder="digite seu email..." onChange={e => setEmail(e.target.value)} />
+                        <input minLength="7" maxLength="65" id="email" required type="email" placeholder="digite seu email..." onChange={e => setEmail(e.target.value)} />
                     </li>
                     <li>
                         <strong>Data de Nascimento</strong>
-                        <input id="dataNascimento" type="date" max="2001-00-00" onChange={e => setdataNascimento(e.target.value)} />
+                        <input id="dataNascimento" type="date" max="2001-00-00" required onChange={e => setdataNascimento(e.target.value)} />
                     </li>
 
                     <li>
@@ -279,9 +247,8 @@ export default function Cadastro() {
                                  </p>
                             </ReactTooltip>
                         </div>
-                        <input id="senha" minLength="7" maxLength="15" placeholder="digite uma senha..." type="password" onChange={e => setSenha(e.target.value)} />
+                        <input id="senha" minLength="7" maxLength="15" required placeholder="digite uma senha..." type="password" onChange={e => setSenha(e.target.value)} />
                     </li>
-
                     <li>
                         <strong>Confirme a senha
                          {confirmarSenha != senha ? <>
@@ -297,7 +264,7 @@ export default function Cadastro() {
                             }
 
                         </strong>
-                        <input id="confirmarSenha" minLength="7" maxLength="15" placeholder="confirme sua senha..." type="password" onChange={e => setConfirmarSenha(e.target.value)} />
+                        <input id="confirmarSenha" minLength="7" maxLength="15" required placeholder="confirme sua senha..." type="password" onChange={e => setConfirmarSenha(e.target.value)} />
                     </li>
 
                 </ul>
@@ -312,22 +279,21 @@ export default function Cadastro() {
                         </ReactTooltip>
                     </h3>
 
-
                     <ul>
 
                         <li>
                             <strong>Estado</strong>
-                            <input id="estado" disabled="true" placeholder="ex:São Paulo" />
+                            <input id="estado" disabled={true} placeholder="ex:São Paulo" />
                         </li>
 
                         <li>
                             <strong>Cidade</strong>
-                            <input id="cidade" disabled="true" placeholder="ex:São Bernado do Campo" />
+                            <input id="cidade" disabled={true} placeholder="ex:São Bernado do Campo" />
                         </li>
 
                         <li>
                             <strong>Rua</strong>
-                            <input id="rua" disabled="true" placeholder="ex:Rua Gabriel Garcia" />
+                            <input id="rua" disabled={true} placeholder="ex:Rua Gabriel Garcia" />
                         </li>
 
                         <li>
@@ -345,7 +311,7 @@ export default function Cadastro() {
                                     null
                                 }
                             </strong>
-                            <input id="cep" minLength="8" maxLength="9" placeholder="00000-000" onChange={e => setCEP(e.target.value)} />
+                            <input id="cep" minLength="8" maxLength="9" required placeholder="00000-000" onChange={e => setCEP(e.target.value)} />
                         </li>
 
                         <li>
@@ -363,16 +329,20 @@ export default function Cadastro() {
                                     null
                                 }
                             </strong>
-                            <input id="complemento" minLength="3" maxLength="20" placeholder="Apto/Casa/Logradouro" onChange={e => setComplemento(e.target.value)} />
+                            <input id="complemento" minLength="3" maxLength="20" required placeholder="Apto/Casa/Logradouro" onChange={e => setComplemento(e.target.value)} />
                         </li>
 
                         <li>
                             <strong>Ponto de Referência</strong>
-                            <textarea id="pontoReferencia" placeholder="ex: ao lado do posto de gasolina" onChange={e => setPontoReferencia(e.target.value)} />
+                            <textarea id="pontoReferencia" placeholder="ex: ao lado do posto de gasolina" maxLength={90} wrap={true} required onChange={e => setPontoReferencia(e.target.value)} />
                         </li>
 
                     </ul>
                 </div>
+                <h4>Para cadastrar-se como consumidor clique no botão abaixo</h4>
+
+                <button type="submit" onClick={()=>enviarRequisicaoPost(1)} className="buttonC" id="buttonC">Finalizar cadastro como consumidor</button>
+
             </form>
 
             <div className="container-entregador">
@@ -387,22 +357,11 @@ export default function Cadastro() {
 
                 <h4>Quer fazer parte dessa missão?</h4>
 
+                <button className="buttonE" id="buttonE" onClick={mostrarExtensaoCadastro}>Quero ser entregador</button>
 
-                <button type="submit" className="buttonE" id="buttonE" onClick={mostrarExtensaoCadastro}>Quero ser entregador</button>
-
-
-                <h4>Para cadastrar - se somente como consumidor clique no botão a baixo</h4>
-
-
-                <button type="submit" onClick={enviarRequisicaoPost} className="buttonC" id="buttonC">Finalizar cadastro como consumidor</button>
-
-                
                 <div id="extensaoCadastro">
+                    <ExtensaoCadastro parentCallback={callbackChildFunction} />
 
-                    <ExtensaoCadastro parentCallback={callbackChildFunction}>
-                        <p>{console.log(RG)}</p>
-
-                    </ExtensaoCadastro>
                 </div>
             </div>
         </div>
