@@ -33,7 +33,7 @@ export default function Login(props) {
             sessionStorage.setItem('usuario', JSON.stringify(response))
             sessionStorage.setItem('qtdPaginaRenderizada', 0)
             var tipoPerfil = response.data.ehConsumidor ==0 ? "consumidor" : "entregador";
-            window.location.href = `http://localhost:3000/${tipoPerfil}`
+            window.location.href = `https://vapm-frontend.herokuapp.com/${tipoPerfil}`
         }
         else {
             console.log("Senha/Usuário incorretas")
