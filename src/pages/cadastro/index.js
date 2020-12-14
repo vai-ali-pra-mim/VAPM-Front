@@ -34,7 +34,7 @@ export default function Cadastro() {
         setThumbnailPerfil(childData[2])
         enviarRequisicaoPost(0)
         document.getElementById("extensaoCadastro").style.display = "none";
-        window.location.href = "http://localhost:3000/login"
+        window.location.href = "https://vapm-frontend.herokuapp.com/login"
     }
 
     useEffect(() => {
@@ -119,7 +119,7 @@ export default function Cadastro() {
             let requisicao = await api.post("/usuarios", corpoRequisicao);
             sessionStorage.setItem('requisicao', JSON.stringify(requisicao))
             //console.log(requisicao)
-            window.location.href = "http://localhost:3000/login"
+            window.location.href = "https://vapm-frontend.herokuapp.com/login"
         }
         catch (er) {
             console.log("Requisicao não foi feita")
