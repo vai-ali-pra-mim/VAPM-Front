@@ -43,7 +43,7 @@ export default function Entregador() {
     setEntregador({})
     setPosts({})
     sessionStorage.clear()
-    window.location.href = "https://vapm-frontend.herokuapp.com/login"
+    window.location.href = "http://localhost:3000/login"
   }
 
   const vouAli = (idUsuario) => {
