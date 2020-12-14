@@ -20,6 +20,7 @@ import btnExtrato from '../../assets/btn-extrato.png';
 import api from '../../services/api'
 import './style.css';
 
+
 export default function Entregador() {
 
   const [posts, setPosts] = useState([])
@@ -181,21 +182,20 @@ export default function Entregador() {
                       <strong>{item.titulo}</strong>
                       <span><FaRegStar color="yellow" /> 4,7</span>
                       <p> <b>Data e horário de realizacao</b> - {String(moment(item.dataHoraRealizacao.split("T")[0]).format("DD/MM/YYYY"))} ás {item.dataHoraRealizacao.split("T")[1]} </p>
-                      <p> {item.descricao} - {item.localTarefa} </p>
+                      <p> <b>Descrição - </b> {item.descricao} - {item.localTarefa} </p>
                       <p> <b>Tempo estimado de realização -</b> {item.tempoEstimadoRealizacao} hrs/mins </p>
-
-                      <strong>aceita - até {item.limitePesoEntrega}Kg e {item.limiteQuantidadeItens} itens</strong>
-                      <p>R$ {item.taxaEntrega}</p>
+                      <p><b>Aceita - até:  </b>  {item.limitePesoEntrega}Kg e {item.limiteQuantidadeItens} itens</p>
+                      <p> <b>Taxa de entrega:  </b> R$ {item.taxaEntrega}</p>
                     </div>
                     {
                       item.solicitanteId !== null ?
                         item.estaEmEspera === 0 ?
 
-                          <button onClick={() => openModalInfoSolicitante(item.solicitanteId)} >Ver dados do solicitante:</button>
+                          <button className="btn-modal-info-solicitante" onClick={() => openModalInfoSolicitante(item.solicitanteId)}>Ver dados do solicitante</button>
                           :
-                          <button onClick={() => openModalRespostaPost(item)}> Aceitar/Recusar pedido</button>
+                          <button className="btn-modal-resposta-post" onClick={() => openModalRespostaPost(item)}> Aceitar/Recusar pedido</button>
                         :
-                        <span>Sem solicitações</span>
+                        <span className="sem-solicitacao-messagem">Sem solicitações</span>
 
                     }
                   </li>

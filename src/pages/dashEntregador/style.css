@@ -100,13 +100,14 @@
     margin-bottom: 20px;
   }
     .feed ul li strong {
+      font-size: 22px;
       margin-left: 20%;
     }
   
     .feed ul li p {
       color: #737380;
-      line-height: 21px;
-      font-size: 16px;
+      line-height: 25px;
+      font-size: 19px;
       margin-left: 20%;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -142,4 +143,39 @@
   
   .item-logout{
     margin-left: -2.0vw;
+  }
+
+  .sem-solicitacao-messagem{
+    font-size: 1.5vw;
+    color: black;
+    display: grid;
+    justify-self: center;
+    margin-top: 3%;
+    margin-left: 35%;
+  }
+
+  .btn-modal-info-solicitante{
+    background-color: #F09435;
+    color: white;
+    border: none;
+    width: 20vw;
+    height: 8vh;
+    border-radius: 20px;
+    font-size: 1.5vw;
+    margin-bottom: 8%;
+    margin-top: 5%;
+    margin-left: 23%;
+  }
+
+  .btn-modal-resposta-post{
+    background-color:  #037EA3;
+    color: white;
+    border: none;
+    width: 20vw;
+    height: 8vh;
+    border-radius: 20px;
+    font-size: 1.5vw;
+    margin-bottom: 8%;
+    margin-top: 5%;
+    margin-left: 23%;
   }

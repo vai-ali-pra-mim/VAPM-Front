@@ -1,4 +1,4 @@
-import React from 'react';
+gitimport React from 'react';
 import Swal from 'sweetalert2';
 import api from '../../../services/api';
 
@@ -108,15 +108,19 @@ export default function respostaSolicitacao(solicitante, logradouro, idPost) {
     showConfirmButton: true
   }).then(async(result) => {
     if (result.isConfirmed) {
-      //console.log('confirmado');
-
+      api.put(`/posts/status-espera/${idPost}/entregador`)
+      console.log('confirmado');
+      setTimeout(()=>{
+        window.location.reload()
+      },550)
+      
     } else {
-      //console.log('recusado');
-      let post = await api.put(`/posts/status-aceite/${idPost}/${9999}/entregador`)
-      //console.log(post)
+      console.log('recusado');
+      await api.put(`/posts/status-aceite/${idPost}/${9999}/entregador`)
+      setTimeout(()=>{
+        window.location.reload()
+      },550)
+      
     }
-
-    api.put(`/posts/status-espera/${idPost}/entregador`)
-    window.location.reload()
   })
 }

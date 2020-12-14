@@ -73,7 +73,7 @@ export default function PedidosSolicitantesModal(solicitacoes, entregadores) {
             `
                 <li>
                 <FaRegUserCircle id="iconFeed" size={60} />
-                ${solicitacao.estaEmEspera == 1 ? `<div id="messagemEmEspera"> Aguardando confirmação </br> </div>` : `<div id="messagemConfirmacao"> Solicitação confirmada </br> </div>`}
+                ${solicitacao.estaEmEspera == 1 ? `<div id="messagemEmEspera"> Aguardando confirmação </br> </div>` : `<div id="messagemConfirmacao"> Solicitação aceita </br> </div>`}
                 <strong>${entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.usuarioId) ?
 
                 entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.usuarioId)[0].nomeCompleto

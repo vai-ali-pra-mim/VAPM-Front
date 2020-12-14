@@ -4,7 +4,7 @@ import api from '../../../services/api'
 
 import star from '../../../assets/star.png'
 
-export default function solicitarEntregadorModal(post, nomeEntregador, usuario){
+export default function solicitarEntregadorModal(post, nomeEntregador, usuario) {
     Swal.fire({
         title: `Post`,
         html: ` <div className="feed" key={item.idUsuario}>
@@ -33,15 +33,18 @@ export default function solicitarEntregadorModal(post, nomeEntregador, usuario){
             try {
                 let status = await api.put(`/posts/status-aceite/${post.idPost}/${usuario.idUsuario}/consumidor`)
                 let statusEspera = await api.put(`/posts/status-espera/${post.idPost}/consumidor`)
-               // console.log(status);
-               // console.log(statusEspera)
+                // console.log(status);
+                // console.log(statusEspera)
+                setTimeout(()=>{
+                    window.location.reload();
+                },250)               
             }
             catch (Error) {
                 Swal.fire({
                     title: "Solicitação já feita . \n Espere a resposta",
                     icon: "info",
                 })
-            }          
+            }
         }
     })
 }

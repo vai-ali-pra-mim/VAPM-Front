@@ -62,7 +62,8 @@ export default function Consumidor() {
     }, [])
 
     useEffect(async () => {
-        let posts = await api.get(`/posts/consumidor/${usuario.idUsuario}`)
+        let user = JSON.parse(sessionStorage.getItem('usuario')).data;
+        let posts = await api.get(`/posts/consumidor/${user.idUsuario}`)
         //console.log(posts);
         if (posts.data.length > 0) {
             let postAceitos = posts.data.filter(post => post.estaEmEspera == 0)
@@ -122,7 +123,7 @@ export default function Consumidor() {
         sessionStorage.setItem('qtdPaginaRenderizada', 1)
         setTimeout(() => {
             window.location.reload()
-        }, 1000)
+        }, 550)
     }
 
     function openModalSolicitarEntregador(post, nomeEntregador) {
@@ -130,8 +131,9 @@ export default function Consumidor() {
     }
 
     async function buscarPedidosSolicitadosModal() {
+        let user = JSON.parse(sessionStorage.getItem('usuario')).data;
         try {
-            let solicitacoes = await api.get(`/posts/consumidor/${usuario.idUsuario}`)
+            let solicitacoes = await api.get(`/posts/consumidor/${user.idUsuario}`)
             console.log(solicitacoes.data)
             pedidosSolicitantesModal(solicitacoes.data, entregadores)
         }
