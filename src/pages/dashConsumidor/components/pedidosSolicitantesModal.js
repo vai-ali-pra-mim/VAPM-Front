@@ -66,7 +66,7 @@ export default function PedidosSolicitantesModal(solicitacoes, entregadores) {
     }
     </style> 
 
-    <div className="feed" key={item.usuarioId + Math.random() * 5}>
+    <div className="feed" key={item.entregador_id + Math.random() * 5}>
         <ul>
         ${solicitacoes.map(solicitacao => (
 
@@ -74,9 +74,9 @@ export default function PedidosSolicitantesModal(solicitacoes, entregadores) {
                 <li>
                 <FaRegUserCircle id="iconFeed" size={60} />
                 ${solicitacao.estaEmEspera == 1 ? `<div id="messagemEmEspera"> Aguardando confirmação </br> </div>` : `<div id="messagemConfirmacao"> Solicitação aceita </br> </div>`}
-                <strong>${entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.usuarioId) ?
+                <strong>${entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.entregador_id) ?
 
-                entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.usuarioId)[0].nomeCompleto
+                entregadores.filter(itemFilter => itemFilter.idUsuario === solicitacao.entregador_id)[0].nomeCompleto
                 : null
             }</strong>
                 <span><FaRegStar color="yellow" /> 4,7</span>

@@ -174,7 +174,7 @@ button:hover{
         limitePesoEntrega: Number(document.getElementById("limitePesoEntrega").value),
         localTarefa: document.getElementById("localTarefa").value,
         tempoEstimadoRealizacao: document.getElementById("tempoEstimadoRealizacao").value,
-        usuarioId: idUsuario,
+        entregador_id: idUsuario,
         dataHoraRealizacao: document.getElementById("datetime").value,
         foiEntregue: 0,
         foiAceito: 0

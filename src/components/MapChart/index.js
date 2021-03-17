@@ -76,7 +76,7 @@ export default function MapChart({ usuario }) {
 
                                     {posts.length > 0 ?
                                         posts.map(itemPost => (
-                                            itemPost.usuarioId == item.idUsuario ?
+                                            itemPost.entregador_id == item.idUsuario ?
                                                 <>
                                                     <h3 key={uuidv4()} >{itemPost.titulo}</h3>
                                                     {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}

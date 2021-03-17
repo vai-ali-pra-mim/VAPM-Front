@@ -288,9 +288,9 @@ export default function Consumidor() {
                                         posts.map(item => (
                                             <div className="feedCons" key={uuidv4()}>
                                                 <ul>
-                                                    <li onClick={() => { openModalSolicitarEntregador(item, entregadores.filter(itemFilter => itemFilter.idUsuario === item.usuarioId)[0].nomeCompleto) }}>
+                                                    <li onClick={() => { openModalSolicitarEntregador(item, entregadores.filter(itemFilter => itemFilter.idUsuario === item.entregador_id)[0].nomeCompleto) }}>
                                                         <FaRegUserCircle id="iconFeed" size={60} />
-                                                        <strong>{entregadores.filter(itemFilter => itemFilter.idUsuario === item.usuarioId)[0].nomeCompleto}</strong>
+                                                        <strong>{entregadores.filter(itemFilter => itemFilter.idUsuario === item.entregador_id)[0].nomeCompleto}</strong>
                                                         <span><FaRegStar color="yellow" /> 4,7</span>
                                                         <p> <b>Data e horário de realizacao</b> - {String(moment(item.dataHoraRealizacao.split("T")[0]).format("DD/MM/YYYY"))} ás {item.dataHoraRealizacao.split("T")[1]} </p>
                                                         <p> {item.descricao} - {item.localTarefa} </p>
