@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 import ReactTooltip from 'react-tooltip';
 
-import api from '../../services/api'
 import MenCar from '../../assets/men-cart.png'
 import logo from '../../assets/logo.svg'
 import './style.css';
+
+import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
+import frontendURL from '../../services/Frontend-URL/index'
+import requestApi from '../../services/APIs/MainAPIUsuarios'
 import ExtensaoCadastro from '../../components/cadastroEntregador/index'
 
 export default function Cadastro() {
@@ -34,7 +37,7 @@ export default function Cadastro() {
         setThumbnailPerfil(childData[2])
         enviarRequisicaoPost(0)
         document.getElementById("extensaoCadastro").style.display = "none";
-        window.location.href = "https://vapm-frontend.herokuapp.com/login"
+        window.location.href = `${frontendURL}/login`
     }
 
     useEffect(() => {
@@ -64,7 +67,7 @@ export default function Cadastro() {
         let cidade = document.querySelector("#cidade")
 
         if (CEP.length == 8 ||CEP.length == 9 && CEP != "        ") {
-            let localidade = await api.get(`https://viacep.com.br/ws/${CEP}/json/`)
+            let localidade = await requestApi.get(`https://viacep.com.br/ws/${CEP}/json/`)
             //console.log(localidade)
             rua.value = localidade.data.logradouro;
             estado.value = localidade.data.uf;
@@ -79,7 +82,7 @@ export default function Cadastro() {
     }, [CEP])
 
     async function buscarCoordenadas() {
-        let enderecoJson = await api.get(`https://viacep.com.br/ws/${CEP}/json/`);
+        let enderecoJson = await requestApi.get(`https://viacep.com.br/ws/${CEP}/json/`);
         // console.log(enderecoJson.data)
         let enderecoLogradouro = String(`${enderecoJson.data.logradouro}%2C%20${CEP}`).replace(" ", "%20")
         //console.log(enderecoLogradouro)
@@ -87,7 +90,7 @@ export default function Cadastro() {
             throw new Error("Endereço não tem logradouro")
         else {
             // console.log(enderecoLogradouro)
-            api.get(`https://us1.locationiq.com/v1/search.php?key=pk.98f58b5cb4882f50ba1c5f0974552f24&q=${enderecoLogradouro}&format=json`)
+            requestApi.get(`https://us1.locationiq.com/v1/search.php?key=pk.98f58b5cb4882f50ba1c5f0974552f24&q=${enderecoLogradouro}&format=json`)
                 .then(item => {
                     let data = item.data[0]
                     sessionStorage.setItem('coordenadas', `${data.lat}, ${data.lon}`)
@@ -116,10 +119,10 @@ export default function Cadastro() {
         }
         try {
            // console.log(corpoRequisicao)
-            let requisicao = await api.post("/usuarios", corpoRequisicao);
+            let requisicao = await APIUsuarios.post("/usuarios", corpoRequisicao);
             sessionStorage.setItem('requisicao', JSON.stringify(requisicao))
             //console.log(requisicao)
-            window.location.href = "https://vapm-frontend.herokuapp.com/login"
+            window.location.href = `${frontendURL}/login`
         }
         catch (er) {
             console.log("Requisicao não foi feita")

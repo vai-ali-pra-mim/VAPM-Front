@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import api from '../../../services/api'
+
+import requestApi from '../../../services/APIs/MainAPIUsuarios'
 
 export default function vouAli(idUsuario) {
 
@@ -189,7 +190,7 @@ button:hover{
       ) {
         //console.log(data);
         try {
-          api.post("/posts", data)
+          requestApi.post("/posts", data)
 
           Swal.fire(
             'Post realizado com sucesso!',

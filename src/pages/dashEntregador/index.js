@@ -17,7 +17,9 @@ import extratoModal from '../dashEntregador/components/extrato'
 import respostaSolicitacao from '../dashEntregador/components/respostaSolicitacao'
 import btnHistorico from '../../assets/btn-historico.png';
 import btnExtrato from '../../assets/btn-extrato.png';
-import api from '../../services/api'
+import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
+import frontendURL from '../../services/Frontend-URL/index'
+import requestApi from '../../services/APIs/MainAPIUsuarios'
 import './style.css';
 
 
@@ -35,7 +37,7 @@ export default function Entregador() {
   useEffect(async () => {
     let user = JSON.parse(sessionStorage.getItem('usuario')).data
     //console.log(user.idUsuario);
-    let usuarioPostsResponse = await api.get(`/posts/usuario/${user.idUsuario}`)
+    let usuarioPostsResponse = await APIUsuarios.get(`/posts/usuario/${user.idUsuario}`)
     setPosts(usuarioPostsResponse.data)
     //console.log(usuarioPostsResponse.data);
   }, [])
@@ -44,7 +46,7 @@ export default function Entregador() {
     setEntregador({})
     setPosts({})
     sessionStorage.clear()
-    window.location.href = "https://vapm-frontend.herokuapp.com/login"
+    window.location.href = `${frontendURL}/login`
   }
 
   const vouAli = (idUsuario) => {
@@ -60,20 +62,20 @@ export default function Entregador() {
   }
 
   async function openModalInfoSolicitante(solicitanteId) {
-    let solicitanteResponse = await api.get(`usuarios/${solicitanteId}`)
+    let solicitanteResponse = await APIUsuarios.get(`usuarios/${solicitanteId}`)
     //console.log(solicitanteResponse);
     let cepSolicitante = solicitanteResponse.data.cep
-    let endereco = await api.get(`https://viacep.com.br/ws/${cepSolicitante}/json/`)
+    let endereco = await requestApi.get(`https://viacep.com.br/ws/${cepSolicitante}/json/`)
     //console.log(endereco);
 
     informacoesSolicitanteModal(solicitanteResponse.data, endereco.data.logradouro)
   }
 
   async function openModalRespostaPost(post) {
-    let solicitanteResponse = await api.get(`usuarios/${post.solicitanteId}`)
+    let solicitanteResponse = await APIUsuarios.get(`usuarios/${post.solicitanteId}`)
     //console.log(solicitanteResponse);
     let cepSolicitante = solicitanteResponse.data.cep
-    let endereco = await api.get(`https://viacep.com.br/ws/${cepSolicitante}/json/`)
+    let endereco = await requestApi.get(`https://viacep.com.br/ws/${cepSolicitante}/json/`)
 
     respostaSolicitacao(solicitanteResponse.data, endereco.data.logradouro, post.idPost)
   }

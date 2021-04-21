@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import api from '../../services/api'
+import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
+import frontendURL from '../../services/Frontend-URL/index'
+
 import './style.css';
 import Logo from '../../assets/logo.png';
 import Microphone from '../../assets/microphone.png';
@@ -26,14 +28,14 @@ export default function Login(props) {
             senha
         }
 
-        let response = await api.post("/usuarios/login", data);
+        let response = await APIUsuarios.post("/usuarios/login", data);
         //console.log(response)
         if (response.status === 200) {
 
             sessionStorage.setItem('usuario', JSON.stringify(response))
             sessionStorage.setItem('qtdPaginaRenderizada', 0)
             var tipoPerfil = response.data.ehConsumidor ==0 ? "consumidor" : "entregador";
-            window.location.href = `https://vapm-frontend.herokuapp.com/${tipoPerfil}`
+            window.location.href = `${frontendURL}/${tipoPerfil}`
         }
         else {
             console.log("Senha/Usuário incorretas")

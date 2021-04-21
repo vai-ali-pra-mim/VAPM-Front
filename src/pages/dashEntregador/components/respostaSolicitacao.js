@@ -1,6 +1,6 @@
 import React from 'react';
 import Swal from 'sweetalert2';
-import api from '../../../services/api';
+import requestApi from '../../../services/APIs/MainAPIUsuarios'
 
 export default function respostaSolicitacao(solicitante, logradouro, idPost) {
 
@@ -108,7 +108,7 @@ export default function respostaSolicitacao(solicitante, logradouro, idPost) {
     showConfirmButton: true
   }).then(async(result) => {
     if (result.isConfirmed) {
-      api.put(`/posts/status-espera/${idPost}/entregador`)
+      requestApi.put(`/posts/status-espera/${idPost}/entregador`)
       console.log('confirmado');
       setTimeout(()=>{
         window.location.reload()
@@ -116,7 +116,7 @@ export default function respostaSolicitacao(solicitante, logradouro, idPost) {
       
     } else {
       console.log('recusado');
-      await api.put(`/posts/status-aceite/${idPost}/${9999}/entregador`)
+      await requestApi.put(`/posts/status-aceite/${idPost}/${9999}/entregador`)
       setTimeout(()=>{
         window.location.reload()
       },550)

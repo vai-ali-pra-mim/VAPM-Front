@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2';
 import './style.css'
 
-import api from '../../services/api'
+import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
+import coordenadasAPI from '../../services/APIs/GeoMatchingAPI'
 
 export default function MapChart({ usuario }) {
     const [entregadores, setEntregadores] = useState([])
@@ -24,7 +25,7 @@ export default function MapChart({ usuario }) {
     }, [])
 
     function getEntregadores() {
-        api.get(`/usuarios/entregadores/${usuario.coordenadas}`).then(item => {
+        coordenadasAPI.get(`/coordenadas/${usuario.coordenadas}`).then(item => {
             // console.log(item.data)
             sessionStorage.setItem('entregadores', JSON.stringify(item.data))
             setEntregadores(item.data)
@@ -69,29 +70,31 @@ export default function MapChart({ usuario }) {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                 {
-                    entregadores.length > 0 ?
-                        entregadores.map(item => (
-                            <Marker key={uuidv4()} riseOnHover={true} position={item.coordenadas.split(', ').map(item => Number(item))} zoom={15}>
-                                <Popup maxWidth={110} className="popup" >
+                    entregadores != null ?
+                        entregadores.length > 0 ?
+                            entregadores.map(item => (
+                                <Marker key={uuidv4()} riseOnHover={true} position={item.coordenadas.split(', ').map(item => Number(item))} zoom={15}>
+                                    <Popup maxWidth={110} className="popup" >
 
-                                    {posts.length > 0 ?
-                                        posts.map(itemPost => (
-                                            itemPost.entregador_id == item.idUsuario ?
-                                                <>
-                                                    <h3 key={uuidv4()} >{itemPost.titulo}</h3>
-                                                    {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}
+                                        {posts.length > 0 ?
+                                            posts.map(itemPost => (
+                                                itemPost.entregador_id == item.idUsuario ?
+                                                    <>
+                                                        <h3 key={uuidv4()} >{itemPost.titulo}</h3>
+                                                        {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}
 
-                                                    < button onClick={() => openModalSolicitarEntregador(itemPost, item.nomeCompleto)}>Ver mais</button>
-                                                </>
-                                                : null
-                                        ))
-                                        : null
-                                    }
-                                </Popup>
-                            </Marker>
-                        ))
-                        :
-                        null
+                                                        < button onClick={() => openModalSolicitarEntregador(itemPost, item.nomeCompleto)}>Ver mais</button>
+                                                    </>
+                                                    : null
+                                            ))
+                                            : null
+                                        }
+                                    </Popup>
+                                </Marker>
+                            ))
+                            :
+                            null
+                        : null
                 }
                 {
                     <Marker key={solicitante.idUsuario} riseOnHover={true} position={coordenadasSolicitante} icon={icons.oldManIcon} zoom={15}>

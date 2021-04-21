@@ -1,6 +1,6 @@
 import React from 'react';
 import Swal from 'sweetalert2';
-import api from '../../../services/api'
+import APIUsuarios from '../../../services/APIs/MainAPIUsuarios'
 
 import star from '../../../assets/star.png'
 
@@ -31,8 +31,8 @@ export default function solicitarEntregadorModal(post, nomeEntregador, usuario) 
         if (result.isConfirmed) {
             //  mudar o idSolicitante do post
             try {
-                let status = await api.put(`/posts/status-aceite/${post.idPost}/${usuario.idUsuario}/consumidor`)
-                let statusEspera = await api.put(`/posts/status-espera/${post.idPost}/consumidor`)
+                let status = await APIUsuarios.put(`/posts/status-aceite/${post.idPost}/${usuario.idUsuario}/consumidor`)
+                let statusEspera = await APIUsuarios.put(`/posts/status-espera/${post.idPost}/consumidor`)
                 // console.log(status);
                 // console.log(statusEspera)
                 setTimeout(()=>{

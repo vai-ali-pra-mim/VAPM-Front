@@ -13,7 +13,9 @@ import logo from '../../assets/logo.svg';
 import btnVeja from '../../assets/btn-veja.png';
 import btnFavoritos from '../../assets/btn-favoritos.png';
 import btnSoliticitacao from '../../assets/btn-solicitacoes.png';
-import api from '../../services/api'
+import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
+import frontendURL from '../../services/Frontend-URL/index'
+import coordenadasAPI from '../../services/APIs/GeoMatchingAPI'
 import pedidosSolicitantesModal from '../dashConsumidor/components/pedidosSolicitantesModal'
 import MapChart from '../../components/MapChart'
 import solicitarEntregadorModal from './components/solicitarEntregadorModal'
@@ -36,38 +38,40 @@ export default function Consumidor() {
     }, [])
 
     useEffect(async () => {
-
         let user = JSON.parse(sessionStorage.getItem('usuario')).data;
-        setUsuario(user)
-        //console.log(String(usuario.coordenadas))
-        let usuariosProximos = await api.get(`/usuarios/entregadores/${user.coordenadas}`)
-        // console.log(usuariosProximos.data)
+
+        let usuariosProximos = await coordenadasAPI.get(`/coordenadas/${user.coordenadas}`)
+        //console.log('setEntregadores');
+        setEntregadores(usuariosProximos.data)
+
         let idUsuarios = ""
         if (usuariosProximos.data.length > 0) {
             usuariosProximos.data.map(item => {
                 idUsuarios += `${item.idUsuario},`
             });
             //console.log(idUsuarios);
-            let postsResponse = await api.get(`/posts/usuarios/${idUsuarios}`)
-            // console.log(postsResponse.data)
-            setPosts(postsResponse.data);
+            let postsResponse = await APIUsuarios.get(`/posts/usuarios/${idUsuarios}`)
+            setPosts(postsResponse.data)
+            // console.log('Posts');
+            // console.log(postsResponse.data);
+
             sessionStorage.setItem('posts', JSON.stringify(postsResponse.data))
-            setEntregadores(JSON.parse(sessionStorage.getItem('entregadores')))
         }
         else {
             setPosts([]);
             sessionStorage.setItem('posts', JSON.stringify([]))
             setEntregadores([])
+            console.log('N]ap twm nada');
         }
     }, [])
 
     useEffect(async () => {
         let user = JSON.parse(sessionStorage.getItem('usuario')).data;
-        let posts = await api.get(`/posts/consumidor/${user.idUsuario}`)
+        let posts = await APIUsuarios.get(`/posts/consumidor/${user.idUsuario}`)
         //console.log(posts);
         if (posts.data.length > 0) {
-            let postAceitos = posts.data.filter(post => post.estaEmEspera == 0)
-            setPostsSemResposta(postAceitos.length)
+            //let postAceitos = posts.data.filter(post => post.estaEmEspera == 0)
+            //setPostsSemResposta(postAceitos.length)
             //console.log('posts aceitos');
             //console.log(postAceitos);
         }
@@ -116,7 +120,7 @@ export default function Consumidor() {
         setUsuario([])
         setPosts([])
         sessionStorage.clear()
-        window.location.href = "https://vapm-frontend.herokuapp.com/login"
+        window.location.href = `${frontendURL}/login`
     }
 
     let recarregarPagina = () => {
@@ -133,7 +137,7 @@ export default function Consumidor() {
     async function buscarPedidosSolicitadosModal() {
         let user = JSON.parse(sessionStorage.getItem('usuario')).data;
         try {
-            let solicitacoes = await api.get(`/posts/consumidor/${user.idUsuario}`)
+            let solicitacoes = await APIUsuarios.get(`/posts/consumidor/${user.idUsuario}`)
             console.log(solicitacoes.data)
             pedidosSolicitantesModal(solicitacoes.data, entregadores)
         }
@@ -265,6 +269,11 @@ export default function Consumidor() {
                     </ul>
                 </div>
 
+                {console.log('posts:1')}
+                {console.log(posts)}
+                {console.log('entregadores:1')}
+                {console.log(entregadores)}
+
                 <div id="posts">
                     {
                         posts != null ?
@@ -285,19 +294,20 @@ export default function Consumidor() {
                                 entregadores != null ?
                                     entregadores.length > 0 ?
 
-                                        posts.map(item => (
+                                        posts.map(post => (
                                             <div className="feedCons" key={uuidv4()}>
                                                 <ul>
-                                                    <li onClick={() => { openModalSolicitarEntregador(item, entregadores.filter(itemFilter => itemFilter.idUsuario === item.entregador_id)[0].nomeCompleto) }}>
-                                                        <FaRegUserCircle id="iconFeed" size={60} />
-                                                        <strong>{entregadores.filter(itemFilter => itemFilter.idUsuario === item.entregador_id)[0].nomeCompleto}</strong>
+                                                    <li onClick={() => { openModalSolicitarEntregador(post, entregadores.filter(itemFilter => itemFilter.idUsuario === post.entregadorId)[0].nomeCompleto) }}>
+                                                    <FaRegUserCircle id="iconFeed" size={60} />
+                                                        <strong>{ entregadores.filter(itemFilter => itemFilter.idUsuario === post.entregadorId)[0].nomeCompleto}</strong>
+                                                    
                                                         <span><FaRegStar color="yellow" /> 4,7</span>
-                                                        <p> <b>Data e horário de realizacao</b> - {String(moment(item.dataHoraRealizacao.split("T")[0]).format("DD/MM/YYYY"))} ás {item.dataHoraRealizacao.split("T")[1]} </p>
-                                                        <p> {item.descricao} - {item.localTarefa} </p>
-                                                        <p> <b>Tempo estimado de realização -</b> {item.tempoEstimadoRealizacao} hrs/mins </p>
+                                                        <p> <b>Data e horário de realizacao</b> - {String(moment(post.dataHoraRealizacao.split("T")[0]).format("DD/MM/YYYY"))} ás {post.dataHoraRealizacao.split("T")[1]} </p>
+                                                        <p> {post.descricao} - {post.localTarefa} </p>
+                                                        <p> <b>Tempo estimado de realização -</b> {post.tempoEstimadoRealizacao} hrs/mins </p>
 
-                                                        <strong> {`aceita - até ${item.limitePesoEntrega}Kg(s) e/ou ${item.limiteQuantidadeItens} item(s)`}</strong>
-                                                        <p>{`Taxa de entrega: R$ ${item.taxaEntrega}`}</p>
+                                                        <strong> {`aceita - até ${post.limitePesoEntrega}Kg(s) e/ou ${post.limiteQuantidadeItens} item(s)`}</strong>
+                                                        <p>{`Taxa de entrega: R$ ${post.taxaEntrega}`}</p>
                                                     </li>
                                                 </ul>
                                             </div>
