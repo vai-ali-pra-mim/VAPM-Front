@@ -1,3 +1,3 @@
-let api = "http://localhost:3000"
+let api = "https://vapm-frontend.herokuapp.com/"
 
 export default api;
