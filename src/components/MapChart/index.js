@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2';
 import './style.css'
 
-import APIUsuarios from '../../services/APIs/MainAPIUsuarios'
 import coordenadasAPI from '../../services/APIs/GeoMatchingAPI'
 
 export default function MapChart({ usuario }) {
@@ -76,17 +75,19 @@ export default function MapChart({ usuario }) {
                                 <Marker key={uuidv4()} riseOnHover={true} position={item.coordenadas.split(', ').map(item => Number(item))} zoom={15}>
                                     <Popup maxWidth={110} className="popup" >
 
-                                        {posts.length > 0 ?
-                                            posts.map(itemPost => (
-                                                itemPost.entregador_id == item.idUsuario ?
-                                                    <>
-                                                        <h3 key={uuidv4()} >{itemPost.titulo}</h3>
-                                                        {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}
+                                        {posts != null ?
+                                            posts.length > 0 ?
+                                                posts.map(itemPost => (
+                                                    itemPost.entregador_id == item.idUsuario ?
+                                                        <>
+                                                            <h3 key={uuidv4()} >{itemPost.titulo}</h3>
+                                                            {itemPost.descricao.length < 37 ? itemPost.descricao : `${itemPost.descricao.substring(0, 37)}...`}
 
-                                                        < button onClick={() => openModalSolicitarEntregador(itemPost, item.nomeCompleto)}>Ver mais</button>
-                                                    </>
-                                                    : null
-                                            ))
+                                                            < button onClick={() => openModalSolicitarEntregador(itemPost, item.nomeCompleto)}>Ver mais</button>
+                                                        </>
+                                                        : null
+                                                ))
+                                                : null
                                             : null
                                         }
                                     </Popup>
@@ -105,7 +106,6 @@ export default function MapChart({ usuario }) {
                 }
 
             </MapContainer>
-
         </div >
     )
 }
